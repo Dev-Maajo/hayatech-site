@@ -1,0 +1,22 @@
+HayaTech — DNS quick checklist (GoDaddy domain → any host)
+
+Option A — Keep DNS at GoDaddy (simplest)
+1) Get records from your host's dashboard.
+2) In GoDaddy DNS:
+   - A record: @  →  [YOUR_HOST_IP]
+   - CNAME:   www →  [YOUR_HOST_PROVIDED_TARGET]
+3) Save. Wait 5–30min for propagation.
+
+Option B — Use host’s nameservers
+1) In your host, create a site and get NS records (e.g., ns1.example.com, ns2.example.com).
+2) In GoDaddy → Domain → Nameservers → change to custom NS.
+3) Manage all A/CNAME/MX at the host now.
+
+Email (Google Workspace example)
+- MX (5 records): ASPMX.L.GOOGLE.COM (1), ALT1.ASPMX.L.GOOGLE.COM (5), ALT2.ASPMX.L.GOOGLE.COM (5),
+  ALT3.ASPMX.L.GOOGLE.COM (10), ALT4.ASPMX.L.GOOGLE.COM (10)
+- SPF TXT: v=spf1 include:_spf.google.com ~all
+- DKIM: generate 2048-bit key in Admin Console and add TXT as provided, then “Start authentication”
+- DMARC TXT: v=DMARC1; p=quarantine; rua=mailto:dmarc@hayatech.dev; adkim=s; aspf=s; pct=100
+
+Note: .dev is HSTS preloaded; your host must provide HTTPS (most do automatically).
